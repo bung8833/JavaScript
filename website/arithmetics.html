@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Elementary Arithmetic</title>
+    <link rel="stylesheet" href="stylesheets/arithmetics.css">
+</head>
+<body>
+    <h1>Elementary Arithmetic</h1>
+    <form>
+        <input type="number" id="num1" placeholder="Enter first number">
+        <select id="operator">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="number" id="num2" placeholder="Enter second number">
+        <button type="button" onclick="calculate()">Calculate</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        function calculate() {
+            const num1 = Number(document.getElementById('num1').value);
+            const num2 = Number(document.getElementById('num2').value);
+            const operator = document.getElementById('operator').value;
+            let result;
+            switch (operator) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    result = num1 / num2;
+                    break;
+                default:
+                    result = 'Invalid operator';
+            }
+            document.getElementById('result').textContent = result;
+        }
+    </script>
+</body>
+</html>

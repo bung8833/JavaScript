@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h1>Welcome!</h1>
+    </div>
+    
+    <script>
+        {
+            var n1 = 200; // global scope
+            let n2 = 100; // block scope
+
+            document.write(`n1=${n1}, n2=${n2}<br/>`);
+        }
+        //document.write(`n1=${n1}, n2=${n2}<br/>`);  //ReferenceError: n2 is not defined
+    </script>
+</body>
+</html>
