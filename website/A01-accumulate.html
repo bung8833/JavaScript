@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="stylesheets/main-box.css"/>
+</head>
+<body>
+    <div class="main-box">
+        <h4 id="h1-1">數字連加</h4>
+        <input type="text" id="start" value="1" size="5" />
+        ~
+        <input type="text" id="end" value="10" size="5" />
+        <!--call function to calculate accumulate answer-->
+        <button onclick="loopAccumulate();">連加</button>
+        <input type="text" id="result" size="10" />
+    </div>
+
+
+    <script>
+        function trapezoidalAccumulate() {
+            
+            let start = parseInt(document.getElementById("start").value);
+            let end = parseInt(document.getElementById("end").value);
+
+            let total = 0;
+            let countOfNumbers = Math.abs(start - end) + 1;
+
+            // 利用梯形公式 計算連加總合
+            total = (start + end) * countOfNumbers / 2;
+            document.getElementById("result").value = total;
+        }
+
+        function loopAccumulate() {
+
+            let start = parseInt(document.getElementById("start").value);
+            let end = parseInt(document.getElementById("end").value);
+
+            // 確保 start <= end
+            if (start > end) {
+                let temp = end;
+                end = start;
+                start = temp;
+            }
+
+            let total = 0;
+
+            let i = start
+            while (i <= end) {
+                total += i++;
+                // 等同於 total += i; i++;
+            }
+
+            // 另外也可以改用 do-while 實作
+
+            document.getElementById("result").value = total;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="stylesheets/main-box.css" />
+</head>
+<body>
+    <div class="main-box">
+        <label id="result">result</label>
+    </div>
+
+
+
+
+
+
+
+
+    <!--<div class="main-box">
+        <label>性別</label>-->
+
+        <!--性別選項-->
+        <!--<select id="genderOption">
+            <option value="Male">男</option>
+            <option value="Female">女</option>
+        </select>
+
+        <button onclick=greetings();>確定</button>
+
+        <label id="greets">a</label>
+    </div>-->
+
+
+    <script>
+         Arrow Funciton
+
+        let func1 = (
+            (total) => {
+                alert(`回傳${total}`);
+            }
+        );
+
+        func1( total => alert(`回傳${total}`) );  // 結尾後面不可有分號
+        
+
+    </script>
+
+
+    <script>
+        // Function Literal
+
+        //function func1(callback) {
+        //    // doing some computations and calculations
+        //    let total = 55;
+
+        //    callback(total);
+        //}
+
+        //function func2(total) {
+        //    alert(`回傳${total}`);
+        //}
+
+        //// callback
+        //func1(func2);
+
+        /*
+        func1(function (total) {
+            alert(`回傳${total}`);
+        });
+        */
+
+        //(function (total) { alert(`回傳${total}`); })(55); //IIFE 直接呼叫
+
+        //let ff1 = function (total) { alert(total) };
+
+    </script>
+
+    <script>
+        //function greetings() {
+        //    let gender = document.getElementById("genderOption").value;
+        //    let greets;
+
+        //    if (gender == "Male") {
+        //        greets = "先生您好!";
+        //    }
+        //    else {
+        //        greets = "女士您好!";
+        //    }
+
+        //    document.getElementById("greets").textContent = greets;
+        //}
+    </script>
+
+    <script>
+            //var v1 = 100;
+
+            //document.writeln( (true) && (v1++ > 1) );
+            //document.writeln(v1);
+
+            //console.log(50 > false);
+            //console.log(0 == false);
+            //console.log(0 === false);
+    </script>
+
+    <script>
+
+            //function alertNum(num) {
+            //    alert(num);
+            //}
+
+            //alertNum(555);
+
+            //var num = 123.4564;
+            //var num_fix = num.toFixed(3); //四捨五入
+
+            //console.log(num_fix);
+
+
+
+
+            //let num1 = 123.456;
+
+            //let num1_int = parseInt(num1);
+            //let num1_float = parseFloat(num1);
+
+            //console.log(`parseInt(123.456): ${num1_int},
+            //             parseFloat(123.456): ${num1_float}`);
+
+
+
+
+        /*const PI = 3.14159;*/
+
+            //{
+            //    var n1 = 100;
+            //    let n2 = 100;
+
+            //    document.write(`n1=${n1}, n2= ${n2}<br />`)
+            //}
+
+    </script>
+
+    <script>
+            //{
+            //    var n1 = 200; // global scope
+            //    let n2 = 100; // block scope
+
+            //    document.write(`n1=${n1}, n2=${n2}<br/>`);
+            //}
+            //document.write(`n1=${n1}, n2=${n2}<br/>`);  //ReferenceError: n2 is not defined
+    </script>
+</body>
+</html>
