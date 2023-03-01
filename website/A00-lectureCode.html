@@ -4,6 +4,121 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="stylesheets/main-box.css" />
+
+    <script>
+        let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        numbers.splice(1, 0, 100, 101, 102);
+        console.log(`numbers = ${JSON.stringify(numbers)}`);
+
+
+        console.log(numbers.join(`/`));
+
+
+        //let cats =
+        //    [{ name: "andy", age: 3 },
+        //     { name: "mary", age: 8 },
+        //     { name: "rich", age: 5 }];
+
+        //let sum = 0;
+        //for (let i = 0; i < cats.length; i++) {
+        //    sum += cats[i].age;
+        //}
+
+        //console.log(`平均年齡：${(sum / cats.length).toFixed(2)}`);
+
+
+
+
+
+        //let cat = { name: "kitty", age: 3 };
+
+        //for (let prop in cat) {
+        //    console.log(`prop=${cat.prop}`);
+        //}
+
+        //for (let prop in cat) {
+        //    console.log(`prop=${cat[prop]}`);
+        //}
+
+        //console.log( cat["name"] );
+
+        
+        //let nums = new Array(1, 2, 3);
+        //nums[3] = 4;
+        //nums.push(5, 6);
+
+
+        //// iterate over the array
+        //let total = 0;
+        //for (let i = 0; i < nums.length; i++) {
+        //    total += nums[i];
+        //}
+        //console.log(`${total}: iterate`);
+
+
+        //// for-in loop
+        //total = 0;
+        //for (let idx in nums) {
+        //    total += nums[idx];
+        //}
+        //console.log(`${total}: for-in loop`);
+
+
+        //// for-of loop since ES6
+        //total = 0;
+        //for (let num of nums) {
+        //    total += num;
+        //}
+        //console.log(`${total}: for-of loop`);
+
+
+        //// Array.forEach()
+        //total = 0;
+        //nums.forEach(function (value) { total += value });
+        //console.log(`${total}: Array.forEach()`);
+        
+    </script>
+    
+    
+
+    <script>
+        //let obj = {
+        //    name: `kitty`,
+        //    age: 17,
+        //    sing: function () {
+        //        console.log(`My name is ${this.name}, ${this.age} years old.`)
+        //    }
+        //};
+
+        //obj.sing();
+    </script>
+
+    <script>
+        //// 初始物件: Object
+        //let obj = new Object();
+
+        //obj.name = `小黑`;
+        //obj.age = 8;
+        //obj.sing = function () {
+        //    console.log(`${this.name}啦啦啦`)
+        //}
+
+        //console.log(`${obj.name} ${obj.age}`);
+        //obj.sing();
+    </script>
+
+    <script>
+        //// 定義constructor
+        //function Dog(name, age) {
+        //    this.name = name;
+        //    this.age = age;
+        //    this.cry = function cry() { console.log(`I'm ${this.name}`); }
+        //}
+        //// 建立instance
+        //let dog = new Dog(`小黑`, 8);
+        //console.log(`${dog.name} ${dog.age}`);
+        //dog.cry();
+    </script>
 </head>
 <body>
     <div class="main-box">
@@ -33,17 +148,31 @@
 
 
     <script>
-         Arrow Funciton
+        //Arrow Funciton
 
-        let func1 = (
-            (total) => {
-                alert(`回傳${total}`);
-            }
-        );
+        //let func1 = total => alert(`回傳${total}`);
 
-        func1( total => alert(`回傳${total}`) );  // 結尾後面不可有分號
+        //func1(55);
+
+        //let func1 = (
+        //    (total) => {
+        //        alert(`回傳${total}`);
+        //    }
+        //);
+
+        //func1(55);
         
 
+    </script>
+
+    <script>
+        //let f1 = (message) => { return `${message}`; };
+        //let result1 = f1(`this is f1`);
+        //console.log(result1);
+
+        //let f2 = message => `${message}`;
+        //let result2 = f2(`this is f2`);
+        //console.log(result2);
     </script>
 
 
