@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>HW</title>
+    <style>
+        .main-box {
+            margin: 50px auto;
+            width: 400px;
+            height: 200px;
+            padding: 50px;
+            box-shadow: 5px 5px 10px #999;
+            border: 1px solid #fff;
+            text-align: center;
+            font-size: 1.3em;
+        }
+        .result-box {
+            margin: 5px auto;
+            width: 40px;
+            height: 20px;
+            padding: 5px;
+            box-shadow: 5px 5px 10px #999;
+            border: 1px solid #fff;
+            text-align: center;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-box">
+        <div>
+            <h3>猜數字遊戲</h3>
+        </div>
+        <div>
+            <input type="button" value="重啟遊戲"/>
+        </div>
+        <div>
+            <input type="text" value="1" size="99" />
+            <input type="text" value="2" size="99" />
+            <input type="text" value="3" size="99" />
+            <input type="text" value="4" size="99" />
+            <input type="text" value="5" size="99" />
+            <script>
+                let texts = document.querySelectorAll("input[type=text]");
+                for (let text of texts) {
+                    text.size = 5;
+                }
+            </script>
+        </div>
+        <div>
+            <input type="button" value="檢視猜測結果" />
+        </div>
+        <div class="result-box">
+            <label>1<br /></label>
+            <label>2</label>
+        </div>
+        <div>
+            <input type="button" value="隱藏答案" />
+            <input type="text" value="莊家的數字：" />
+        </div>
+    </div>
+</body>
+</html>

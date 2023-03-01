@@ -1,0 +1,13 @@
+﻿h1 {
+    text-align: center;
+}
+
+form {
+    text-align: center;
+}
+
+#result {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+}
