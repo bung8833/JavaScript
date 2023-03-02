@@ -61,6 +61,21 @@
                     }
                 }
             }
+
+            
+
+            // local function
+            function keyListener(event) {
+                div2.innerHTML += `<div>code: ${event.code} key: ${event.key} type: ${event.type}</div>`;
+
+                div2.scrollTo(0, div2.scrollHeight);
+            }
+            var ta2 = document.getElementById('ta2');
+            var div2 = document.getElementById('div2');
+            
+            ta2.addEventListener('keydown', keyListener);
+            ta2.addEventListener('keypress', keyListener);
+            ta2.addEventListener('keyup', keyListener);
         }
     </script>
 
