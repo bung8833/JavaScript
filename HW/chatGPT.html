@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Guessing Numbers</title>
+</head>
+<body>
+    <h1>Guessing Numbers</h1>
+    <p>Select 5 numbers from 1-9 and guess the answer!</p>
+    <div>
+        <button type="button" class="number-button" value="1">1</button>
+        <button type="button" class="number-button" value="2">2</button>
+        <button type="button" class="number-button" value="3">3</button>
+        <button type="button" class="number-button" value="4">4</button>
+        <button type="button" class="number-button" value="5">5</button>
+        <button type="button" class="number-button" value="6">6</button>
+        <button type="button" class="number-button" value="7">7</button>
+        <button type="button" class="number-button" value="8">8</button>
+        <button type="button" class="number-button" value="9">9</button>
+        <button type="button" class="number-button" value="0">0</button>
+    </div>
+
+    <p id="result"></p>
+
+    <script>
+        function checkAnswer() {
+            // Get all checkboxes with name "numbers"
+            const checkboxes = document.getElementsByName("numbers");
+
+            // Check if exactly 5 checkboxes are selected
+            let count = 0;
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    count++;
+                }
+            }
+            if (count !== 5) {
+                alert("Please select exactly 5 numbers!");
+                return;
+            }
+
+            // Generate the answer
+            const answer = generateAnswer();
+
+            // Get the user's guess
+            const guess = getGuess();
+
+            // Check the user's guess against the answer
+            const result = getResult(answer, guess);
+
+            // Display the result
+            document.getElementById("result").innerHTML = result;
+        }
+
+        function generateAnswer() {
+            // Generate 5 random numbers between 1 and 9
+            const answer = [];
+            while (answer.length < 5) {
+                const num = Math.floor(Math.random() * 9) + 1;
+                if (!answer.includes(num)) {
+                    answer.push(num);
+                }
+            }
+            return answer;
+        }
+
+        function getGuess() {
+            // Get all checkboxes with name "numbers"
+            const checkboxes = document.getElementsByName("numbers");
+
+            // Get the values of the selected checkboxes
+            const guess = [];
+            for (let i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    guess.push(parseInt(checkboxes[i].value));
+                }
+            }
+            return guess;
+        }
+
+        function getResult(answer, guess) {
+            // Check how many numbers are in the correct position
+            let correctPosition = 0;
+            for (let i = 0; i < answer.length; i++) {
+                if (answer[i] === guess[i]) {
+                    correctPosition++;
+                }
+            }
+
+            // Check how many numbers are in the answer, but in the wrong position
+            let wrongPosition = 0;
+            for (let i = 0; i < answer.length; i++) {
+                if (guess.includes(answer[i]) && answer[i] !== guess[i]) {
+                    wrongPosition++;
+                }
+            }
+
+            // Format the result string
+            let result = "";
+            if (correctPosition === 5) {
+                result = "Congratulations! You guessed the answer!";
+            } else {
+                result = `You guessed ${correctPosition} number(s) in the correct position and ${wrongPosition} number(s) in the wrong position.`;
+            }
+            return result;
+        }
+
+    </script>
+</body>
+</html>

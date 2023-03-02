@@ -4,11 +4,27 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="stylesheets/main-box.css" />
+    
+    <script>
+        function format(digit) {
+            return digit.toString().padStart(2, "0");
+        }
+
+        setTimeout(showCurrentTime, 20);
+
+        function showCurrentTime() {
+            let dt = new Date();
+            let now = `${dt.getFullYear()}/${format(dt.getMonth() + 1)}/${format(dt.getDate())} ${format(dt.getHours())}:${format(dt.getMinutes())}:${format(dt.getSeconds())}`;
+
+            document.getElementById("clock").innerHTML = now;
+
+            // 非同步 asynchronous function call
+            setTimeout(showCurrentTime, 1000);
+        }
+    </script>
+
 
     <script>
-
-
-
         //let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         //numbers.splice(1, 0, 100, 101, 102);
         //console.log(`numbers = ${JSON.stringify(numbers)}`);
@@ -125,7 +141,8 @@
 </head>
 <body>
     <div class="main-box">
-        <label id="result">result</label>
+        <!--<label id="clock">result</label>-->
+        <h3 id="clock"></h3>
     </div>
 
 
