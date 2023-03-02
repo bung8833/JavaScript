@@ -1,109 +1,67 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Guessing Numbers</title>
+    <title>Number Selector</title>
+    <style type="text/css">
+        button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #eee;
+            cursor: pointer;
+        }
+
+            button.selected {
+                background-color: #66c2a5;
+                color: white;
+            }
+
+            button:hover {
+                background-color: #ccc;
+            }
+    </style>
 </head>
 <body>
-    <h1>Guessing Numbers</h1>
-    <p>Select 5 numbers from 1-9 and guess the answer!</p>
-    <div>
-        <button type="button" class="number-button" value="1">1</button>
-        <button type="button" class="number-button" value="2">2</button>
-        <button type="button" class="number-button" value="3">3</button>
-        <button type="button" class="number-button" value="4">4</button>
-        <button type="button" class="number-button" value="5">5</button>
-        <button type="button" class="number-button" value="6">6</button>
-        <button type="button" class="number-button" value="7">7</button>
-        <button type="button" class="number-button" value="8">8</button>
-        <button type="button" class="number-button" value="9">9</button>
-        <button type="button" class="number-button" value="0">0</button>
+    <h1>Number Selector</h1>
+    <p>Select 5 numbers:</p>
+    <div id="number-buttons">
+        <button id="0" onclick="toggleSelection(this)">0</button>
+        <button id="1" onclick="toggleSelection(this)">1</button>
+        <button id="2" onclick="toggleSelection(this)">2</button>
+        <button id="3" onclick="toggleSelection(this)">3</button>
+        <button id="4" onclick="toggleSelection(this)">4</button>
+        <button id="5" onclick="toggleSelection(this)">5</button>
+        <button id="6" onclick="toggleSelection(this)">6</button>
+        <button id="7" onclick="toggleSelection(this)">7</button>
+        <button id="8" onclick="toggleSelection(this)">8</button>
+        <button id="9" onclick="toggleSelection(this)">9</button>
     </div>
-
-    <p id="result"></p>
-
-    <script>
-        function checkAnswer() {
-            // Get all checkboxes with name "numbers"
-            const checkboxes = document.getElementsByName("numbers");
-
-            // Check if exactly 5 checkboxes are selected
-            let count = 0;
-            for (let i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    count++;
+    <button id="submit-button" onclick="submitSelection()">Submit</button>
+    <p>Your selection:</p>
+    <div id="selected-numbers"></div>
+    <script type="text/javascript">
+        var selectedNumbers = [];
+        function toggleSelection(button) {
+            var number = button.id;
+            var index = selectedNumbers.indexOf(number);
+            if (index === -1) {
+                if (selectedNumbers.length < 5) {
+                    selectedNumbers.push(number);
+                    button.classList.add("selected");
                 }
-            }
-            if (count !== 5) {
-                alert("Please select exactly 5 numbers!");
-                return;
-            }
-
-            // Generate the answer
-            const answer = generateAnswer();
-
-            // Get the user's guess
-            const guess = getGuess();
-
-            // Check the user's guess against the answer
-            const result = getResult(answer, guess);
-
-            // Display the result
-            document.getElementById("result").innerHTML = result;
-        }
-
-        function generateAnswer() {
-            // Generate 5 random numbers between 1 and 9
-            const answer = [];
-            while (answer.length < 5) {
-                const num = Math.floor(Math.random() * 9) + 1;
-                if (!answer.includes(num)) {
-                    answer.push(num);
-                }
-            }
-            return answer;
-        }
-
-        function getGuess() {
-            // Get all checkboxes with name "numbers"
-            const checkboxes = document.getElementsByName("numbers");
-
-            // Get the values of the selected checkboxes
-            const guess = [];
-            for (let i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    guess.push(parseInt(checkboxes[i].value));
-                }
-            }
-            return guess;
-        }
-
-        function getResult(answer, guess) {
-            // Check how many numbers are in the correct position
-            let correctPosition = 0;
-            for (let i = 0; i < answer.length; i++) {
-                if (answer[i] === guess[i]) {
-                    correctPosition++;
-                }
-            }
-
-            // Check how many numbers are in the answer, but in the wrong position
-            let wrongPosition = 0;
-            for (let i = 0; i < answer.length; i++) {
-                if (guess.includes(answer[i]) && answer[i] !== guess[i]) {
-                    wrongPosition++;
-                }
-            }
-
-            // Format the result string
-            let result = "";
-            if (correctPosition === 5) {
-                result = "Congratulations! You guessed the answer!";
             } else {
-                result = `You guessed ${correctPosition} number(s) in the correct position and ${wrongPosition} number(s) in the wrong position.`;
+                selectedNumbers.splice(index, 1);
+                button.classList.remove("selected");
             }
-            return result;
         }
-
+        function submitSelection() {
+            if (selectedNumbers.length === 5) {
+                var displayString = selectedNumbers.join(", ");
+                document.getElementById("selected-numbers").innerHTML = displayString;
+            }
+        }
     </script>
 </body>
 </html>
