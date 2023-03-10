@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title></title>
+
+    <link rel="stylesheet" href="./w05.iii.pinju.in_files/homework.css">
+    <script src="./w05.iii.pinju.in_files/homework.js.下載"></script>
+</head>
+<body>
+    <div class="main-box">
+        <h3>猜數字遊戲</h3>
+        <div>
+            <label for="modeSelection">選擇模式</label>
+            <select id="modeSelection" name="modeSelection" onchange="modeSelect()" style="font-size:18px;">
+                <option value="default">(請選擇模式)</option>
+                <option value="basic">基礎模式</option>
+                <option value="3B2C">3B2C模式</option>
+            </select>
+        </div><br>
+
+        <div id="rangeSelector">
+            <label>選擇猜測範圍：0~</label>
+            <input type="number" min="9" max="10000" id="maxAnswer" style="font-size:20px; width:75px;" value="9">
+            <button onclick="setGameRange()">重設範圍</button>
+        </div><br>
+		
+		
+
+        <div id="guessNums"></div>
+        <br>
+        <button onclick="guess()" style="font-size:large" id="guessbtn" disabled="">猜!!</button>
+        <button onclick="resetGame()" id="resetbtn" disabled="">重啟遊戲</button>
+        <button onclick="giveupGame()" id="giveupbtn" disabled="">放棄遊戲</button>
+        <hr>
+        <div id="lastTimes"></div>
+        <div id="guessResult" style="font-size:16px"></div>
+        <div id="ansResult" hidden=""></div>
+        <button onclick="gameHelper()" class="help-button">?</button>
+    </div>
+    
+    <script>
+        var answerSet;
+        var selectedMode;
+        var guessBtn = document.getElementById("guessbtn");
+		var resetBtn = document.getElementById("resetbtn");
+		var giveupBtn = document.getElementById("giveupbtn");
+        var lastTimes = 8;
+
+        guessBtn.disabled = true;
+		resetBtn.disabled = true;
+		giveupBtn.disabled = true;
+
+        function modeSelect() {
+            selectedMode = document.getElementById("modeSelection").value;
+            console.log(selectedMode);
+            document.getElementById("guessNums").innerHTML = null;
+            setGameRange();
+            resetGame();
+        }
+
+        function setGameRange() {
+            let range = document.getElementById("maxAnswer").value;
+            answerSet = getRandomNumbers(5, range);
+			resetGame();
+            console.log(answerSet);
+        }
+
+        function guess() {
+            var textSet = document.querySelectorAll("input[type=text]");
+            var guessSet = new Array(0);
+            for (let item of textSet) {
+                guessSet.push(parseInt(item.value));
+            }
+            console.log(guessSet);
+
+            if (containNaN(guessSet)) {
+                alert("請輸入整數");
+                return;
+            }
+            if (containRepeat(guessSet)) {
+                alert("數字不可重複");
+                return;
+            }
+
+            switch (selectedMode) {
+                case "basic":
+                    modeBasic(guessSet);
+                    break;
+                case "3B2C":
+                    mode3B2C(guessSet);
+                    break;
+                default:
+                    break;
+            }
+			
+			clearWord();
+        }
+
+        function modeBasic(guessSet) {
+            let fitSet = containGuessNum(guessSet, answerSet);
+            console.log(fitSet);
+            answerSet.sort();
+            fitSet.sort();
+			if (fitSet.length==0) document.getElementById("ansResult").innerHTML = `<div>你沒有猜中數字</div><div>答案為：${answerSet}</div>`;
+			else if (fitSet.length>=5) document.getElementById("ansResult").innerHTML = `<div>恭喜全對</div><div>答案為：${answerSet}</div>`;
+            else document.getElementById("ansResult").innerHTML = `<div>你猜中的數字為：${fitSet}</div><div>答案為：${answerSet}</div>`;
+            document.getElementById("ansResult").hidden = false;
+        }
+
+        function mode3B2C(guessSet) {
+            let guessResult = check3B2CResult(guessSet, answerSet);
+            document.getElementById("guessResult").innerHTML += `<div>第${8 - lastTimes + 1}次：${guessResult[0]}B${guessResult[1]}C，${guessSet}</div>`;
+            lastTimes--;
+			timesRefresh();
+            if (lastTimes <= 0 || guessResult[1] >= 5) {
+				if (guessResult[1] >= 5) document.getElementById("ansResult").innerHTML = `<div>恭喜答對了</div><div>答案為：${answerSet}</div>`;
+				else document.getElementById("ansResult").innerHTML = `<div>答案為：${answerSet}</div>`;
+				
+                document.getElementById("ansResult").hidden = false;
+				guessBtn.disabled = true;
+            }
+        }
+		
+		function giveupGame(){
+			guessBtn.disabled = true;
+			document.getElementById("ansResult").innerHTML = `<div>你放棄了</div><div>答案為：${answerSet}</div>`;
+			document.getElementById("ansResult").hidden=false;
+		}
+
+
+        function resetGame() {
+			document.getElementById("guessResult").innerHTML = null;
+			document.getElementById("lastTimes").textContent = null;
+			document.getElementById("ansResult").hidden=true;
+			
+			if(selectedMode=="default"){
+				guessBtn.disabled = true;
+				resetBtn.disabled = true;
+				giveupBtn.disabled = true;
+			}
+			else{
+				clearWord();
+				guessBtn.disabled = false;
+				resetBtn.disabled = false;
+				giveupBtn.disabled = false;
+			}
+			
+			if(selectedMode=="3B2C"){
+				lastTimes = 8;
+                timesRefresh();
+			}
+        }
+		
+		function clearWord(){
+			let createTextbox = "";
+			for (let i = 0; i < 5; i++) {
+                createTextbox += `<label for="guess${i + 1}">${i + 1}.&ensp;</label><input type="text" size="10" id="guess${i + 1}" name="guess${i + 1}" /><br />`;
+            }
+			document.getElementById("guessNums").innerHTML = createTextbox;
+		}
+
+        function timesRefresh() {
+            document.getElementById("lastTimes").textContent = `剩餘猜測次數：${lastTimes}`;
+        }
+		
+		function gameHelper(){
+			alert("遊玩方式：先選擇想遊玩的內容，決定好想猜測的範圍，然後開始遊玩\n基礎模式為單純猜5個數字的值\n3B2C模式則需要猜數字的值和位置");
+		}
+    </script>
+
+</body></html>

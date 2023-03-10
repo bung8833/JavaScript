@@ -1,0 +1,64 @@
+﻿function containNaN(numArr) {
+    for (let item of numArr) {
+        if (isNaN(item)) return true;
+    }
+    return false;
+}
+
+function containRepeat(numArr) {
+	let numArrTmp = new Array(0);
+    for (let i = 0; i < numArr.length; i++) {
+        numArrTmp.push(numArr[i]);
+    }
+	console.log(numArrTmp);
+	numArrTmp.sort();
+    for (let i = 0; i < numArrTmp.length - 1; i++) {
+        if (numArrTmp[i] == numArrTmp[i + 1]) return true;
+    }
+    return false;
+}
+
+function rollOneNumber(range) {
+    if (isNaN(range)) return null;
+    return Math.floor(Math.random() * range);
+}
+
+function getRandomNumbers(amount, range) {
+    if (isNaN(amount)) return null;
+    var numSet = new Array(amount);
+    for (let item = 0; item < amount;item++) {
+        let i;
+        do {
+            i = rollOneNumber(range);
+        } while (numSet.includes(i))
+        numSet[item] = i;
+    }
+
+    return numSet;
+}
+
+function containGuessNum(guessNumSet, numSet) {
+    let containNum = new Array(0);
+    for (let guessNum of guessNumSet) {
+        if (numSet.includes(guessNum)) containNum.push(guessNum);
+    }
+    return containNum;
+}
+
+function equalGuessNum(guessNumSet, numSet) {
+    if (guessNumSet.length != numSet.length) return null;
+	
+    let equelNum = 0;
+    for (let i = 0; i < guessNumSet.length;i++) {
+        if (numSet[i] == guessNumSet[i]) equelNum++;
+    }
+    return equelNum;
+}
+
+function check3B2CResult(guessNumSet, numSet) {
+	
+    let containNum = containGuessNum(guessNumSet, numSet);
+    let equalNum = equalGuessNum(guessNumSet, numSet);
+
+    return [containNum.length - equalNum, equalNum];
+}

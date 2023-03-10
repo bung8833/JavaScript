@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>猜數字遊戲</title>
+	<link href="./猜數字遊戲_files/css2" rel="stylesheet">
+	<style>
+		body{
+			background-image: linear-gradient(to top, #fdcbf1 0%, #fdcbf1 1%, #e6dee9 100%);
+			height: 100vh;
+		}
+		.section {
+			width: 70%;
+			height: 350px;
+			max-width:800px;
+			margin: 30px auto;
+			box-shadow: 5px 5px 10px #999;
+			border: 1px solid #fff;
+			padding: 10px 25px;
+			text-align: center;
+			background-color: white;
+			font-family: 'Noto Sans TC', sans-serif;
+		}
+
+		.section-p1 {
+			text-align: left;
+		}
+
+		.button1 {
+			width: 100px;
+			height: 30px;
+			margin: 0 auto;
+			border-color: #FFFFFF;
+			text-align: center;
+			line-height: 30px;
+			cursor: pointer;
+			border-radius: 5px;
+			float: right;
+			background-color: #0081B4;
+			color: white;
+		}
+
+		.button2 {
+			width: 100px;
+			height: auto;
+			margin: 0px auto;
+			border-color: #FFFFFF;
+			text-align: center;
+			line-height: 30px;
+			cursor: pointer;
+			border-radius: 5px;
+			background-color: #0081B4;
+			color: white;
+		}
+
+		.button3 {
+			width: auto;
+			height: auto;
+			margin: 5px auto;
+			border-color: #FFFFFF;
+			text-align: center;
+			line-height: 30px;
+			cursor: pointer;
+			border-radius: 5px;
+			background-color: #0081B4;
+			color: white;
+		}
+
+		h3 {
+			text-align: center;
+		}
+
+		.inputNum {
+			border-radius: 5px;
+			border-color: #F0F0F0;
+			width: 18%;
+			height: 30px;
+			text-align: center;
+			font-size: 1.2em;
+			font-weight: bold;
+			line-height: 25px;
+			cursor: pointer;
+			background-color: #FCFCFC;
+			color: black;
+			width: 18%; /* 設定適當的寬度 */
+			margin: 10px,2%; /* 設定元素間的間距 */
+			float: none; /* 使元素左浮動 */
+		}
+
+		.input-container {
+			width: 100%;
+			margin-bottom:10px;
+			display: flex; /* 使用flexbox排列元素 */
+			justify-content: space-between; /* 水平分散元素 */
+		}
+
+		.divResult {
+			box-shadow: 1px 1px 10px 0px #999 inset;
+			border: 1px solid #fff;
+			margin: 10px auto;
+			width: 50%;
+			height: 80px;
+			text-align: center;
+			background-color:#F3F3FA;
+		}
+
+		.labelBanker {
+			width: 250px;
+			margin: 5px;
+			border: 1px solid #F0F0F0; /* 添加一個黑色1px的實線框線 */
+			padding: 5px 50px; /* 添加內邊距 */
+			text-align: center;
+		}
+
+	</style>
+</head>
+<body>
+	<section class="section">
+		<h3>猜數字遊戲</h3>
+		<button class="button1" id="resetGame" onclick="resetGame()">重啟遊戲</button>
+		<p class="section-p1">玩家猜的數字</p>
+		<div class="input-container">
+			<input class="inputNum" type="text" id="guessNum1" autofocus="">
+			<input class="inputNum" type="text" id="guessNum2">
+			<input class="inputNum" type="text" id="guessNum3">
+			<input class="inputNum" type="text" id="guessNum4">
+			<input class="inputNum" type="text" id="guessNum5">
+		</div>
+		<button class="button2" onclick="checkAnswer();">檢視猜測結果</button>
+		<div class="divResult">
+			<p id="pPlayerMessageId" class="pPlayerMessage"></p>
+		</div>
+		<button onclick="hideBankerNums();" class="button3">偷看答案</button>
+		<label id="labelBankerId" class="labelBanker" style="visibility:hidden">莊家的數字:0,2,3,4,7</label>
+	</section>
+	<script>
+		{
+		var banker;//莊家
+		var player = [];//玩家
+		var playerArray = [];//玩家輸入的數字陣列
+		var comparerResult=[];//比對結果
+		var isNumAlert = false;//玩家輸入的數字是否重複
+		var chkbutton = false;//檢視猜測結果按鈕是否按過
+
+		//[按鈕]
+		//檢視猜測結果按鈕
+		function checkAnswer()
+		{
+			chkbutton = true;
+
+			player = {numbers: getPlayerNums()}
+			//playerArray = {numbers: getPlayerNums()}//取得玩家輸入的數字
+			console.log(`莊家的數字${banker.numbers}`);
+			//比對猜測的結果
+			let result = comparerResult(player.numbers, banker.numbers);
+			colorCorrectNums(result);//將猜對的數字顯示為綠色
+			document.getElementById("pPlayerMessageId").innerHTML = `您猜對的數字有:${result}<br />共${result.length}個`;
+			focusFirstErrorInput();
+			if(result.length==5){
+				var answer = window.confirm("恭喜您猜對了!是否要重新開始遊戲?");
+				if (answer) {
+					resetGame();
+					document.getElementById("guessNum1").focus();
+				}
+				else {
+					return;
+				}
+			}
+		}
+
+		//重置遊戲按鈕
+		var resetGame = function () 
+		{	
+			//1.清空玩家輸入的數字
+			document.querySelectorAll("input.inputNum").forEach(input=>input.value="");
+
+			//2.重新產生莊家的數字
+			bankerNums();
+
+			//3.清空玩家猜測結果
+			document.getElementById("pPlayerMessageId").innerHTML = "";
+			//4.清空玩家猜測結果的顏色
+			document.querySelectorAll("input.inputNum").forEach(input=>input.style.backgroundColor="white");
+
+			//5.檢視猜測結果按鈕狀態初始化
+			chkbutton = false;
+		}
+
+		//[事件的監聽器]
+
+		//Enter事件的監聽器
+		//綁定輸入框的keydown事件
+		//功能:當玩家按下Enter鍵時，如果每個輸入框都有輸入數字，則觸發檢查答案的按鈕
+		//如果有輸入框沒有輸入數字，則將焦點移至下一個輸入框
+		const button2 = document.querySelector(".button2");
+		document.addEventListener("keydown", function (event) {
+			player = {numbers: getPlayerNums()}//取得玩家輸入的數字
+			let count=0;
+			for(value of player.numbers){
+				if(!isNaN(value)){count++;}
+			}
+
+			if (event.key === "Enter"&& count==5) {
+				button2.click();
+			}
+			if (event.key === "Enter" && count < 5) {
+				const inputElement = document.querySelectorAll("input.inputNum");
+				console.log(inputElement);
+				for (let i = 0; i < inputElement.length; i++) {
+					if (inputElement[i].value == "") {
+						inputElement[i].focus();
+						break;
+					}
+				}
+			}
+			if (event.key === "Enter"&& comparerResult.lengtht==5) {//如果玩家猜對了，則按下Enter鍵後，重新開始遊戲
+				button2.click();
+			}
+			if (event.key === "Enter" && comparerResult.length < 5) {//如果還沒猜對，則按下Enter鍵後，將焦點移至下一個輸入框
+				const inputElement = document.querySelectorAll("input.inputNum");
+				console.log(inputElement);
+				for (let i = 0; i < inputElement.length; i++) {
+					if (inputElement[i].value == "") {
+						inputElement[i].focus();
+						break;
+					}
+				}
+			}
+
+		});
+
+		//輸入框的監聽器
+		const inputElements = document.querySelectorAll('.inputNum');
+		// 给每個輸入框元素添加 blur 事件
+		inputElements.forEach(inputElement => {
+			inputElement.addEventListener('blur', () => {
+				//判斷數字是否為重複
+				checkplayNumsDistinct();
+				//判斷輸入的數字是否為0~9
+				if(checkNumRange(inputElement.value)==false && inputElement.value!=""){
+					inputElement.value = "";
+					alert("請輸入0~9的數字");
+					inputElement.focus();
+				};
+			});	
+		});
+		
+		//[函式]
+		//查看莊家的數字
+		var hideBankerNums = function () {
+			let bankerNum = document.querySelector("label.labelBanker");
+			(bankerNum.style.visibility == "hidden") 
+				? bankerNum.style.visibility = "visible" 
+				:bankerNum.style.visibility = "hidden";
+		}
+
+		//取得玩家輸入的數字
+		let getPlayerNums = function () {
+			let playerNums = document.querySelectorAll("input.inputNum");//取得所有inputNum的輸入值
+			playerArray=[];
+			
+			//Way1:使用for迴圈
+			//for (let i = 0; i < playerNums.length; i++) {
+			//	console.log(`測試:${playerNums[i].value}`);
+			//	playerArray.push(playerNums[i].value);
+			//}
+			
+			//Way2:使用forEach
+			playerNums.forEach(playerNums => {
+				playerArray.push(parseInt(playerNums.value));
+			});
+			
+			//console.log(`玩家輸入的數字:${JSON.stringify(playerArray)}`);
+			return playerArray;
+		}
+
+		//亂數產生器
+		let randomGenerator = function (numTotal) {
+			let randomNum = [];
+			for (let i = 0; i < numTotal; i++) {
+				let num = Math.floor(Math.random() * 10);
+				(randomNum.includes(num) == false) ? randomNum.push(num) : i--;
+				//如果randomNum陣列中不包含num
+			}
+			//排序亂數
+			for(let i=0;i<randomNum.length;i++){
+				for(let j=i+1;j<randomNum.length;j++){
+					if(randomNum[i]>randomNum[j]){
+						randomNum[i]^=randomNum[j];
+						randomNum[j]^=randomNum[i];
+						randomNum[i]^=randomNum[j];
+					}
+				}
+			}
+			return randomNum;
+		}
+
+		//莊家的數字產生器
+		let bankerNums = function(){
+			banker = { numbers: randomGenerator(5) }
+			document.getElementById("labelBankerId").innerHTML = `莊家的數字:${banker.numbers}`;
+			console.log(banker.numbers);
+			return banker;
+		}
+
+		//比對猜測的結果，並回傳猜對的數字
+		comparerResult = function (playerNums, bankerNums) {
+			let correctNums=[];
+			for(let i=0;i<playerNums.length;i++){
+				if(bankerNums.includes(playerNums[i])){
+					correctNums.push(playerNums[i]);
+				}
+			}
+			//排序猜對的數字的結果
+			correctNums.sort();
+			return correctNums;
+		}
+		//重新整理時初始化莊家值
+		bankerNums();
+
+		//讓對的數字變顏色
+		let colorCorrectNums = function (correctNums) {
+			let playerNums = document.querySelectorAll("input.inputNum");
+			playerArray=[];
+			playerNums.forEach(playerNums => {
+				playerArray.push(parseInt(playerNums.value));
+			});
+			for (let i = 0; i < playerArray.length; i++) {
+				if (correctNums.includes(playerArray[i])) {
+					playerNums[i].style.backgroundColor = "	#BBFFBB";//綠色
+				}
+				else {
+					playerNums[i].style.backgroundColor = "	#FF9797";//紅色
+				}
+			}
+		}
+		//清空數字顏色/文字
+		let clearNumsMouse = function () {
+			let playerNums = document.querySelectorAll("input.inputNum");
+			playerNums.forEach(playerNums => {
+				playerNums.style.backgroundColor = "white";
+			});
+			
+		}
+		//檢查玩家輸入的數字是否重複
+		let checkplayNumsDistinct = function () {
+		let playerNums = document.querySelectorAll("input.inputNum");
+			playerNums.forEach(playerNums => {
+				playerNums.onchange = function () {
+					let playerNums = document.querySelectorAll("input.inputNum");
+					let playerArray = [];
+					playerNums.forEach(playerNums => {
+						playerArray.push(parseInt(playerNums.value));
+					});
+					for (let i = 0; i < playerArray.length; i++) {
+						for (let j = i + 1; j < playerArray.length; j++) {
+							if (playerArray[i] == playerArray[j]) {
+							errorNum =playerArray[j]
+								alert("請勿輸入重複的數字");
+								if(playerNums[j].backgroundColor=="rgb(255, 151, 151)"||chkbutton==false){
+									playerNums[j].value = "";
+									playerNums[j].focus();
+								}
+								else{
+									playerNums[i].value = "";
+									playerNums[i].focus();
+								}
+
+							}
+						}
+					}
+				}
+			});
+		}
+		//檢查玩家輸入的數字是否在0~9之間
+			let checkNumRange = function (num) {
+				if (/^[0-9]$/.test(num) == false) {
+					return false;
+				}
+				return true;
+			} 
+
+		//讓焦點移到第一個錯誤的input
+		let focusFirstErrorInput = function () {
+			let playerNums = document.querySelectorAll(".inputNum");
+			//取得第一個顏色是紅色的input
+			for(let i=0;i<playerNums.length;i++){
+				console.log("d:"+playerNums[i].style.backgroundColor);
+				if(playerNums[i].style.backgroundColor=="rgb(255, 151, 151)"){
+					playerNums[i].value="";
+				}
+			}
+			for(let i=0;i<playerNums.length;i++){
+				console.log("d:"+playerNums[i].style.backgroundColor);
+				if(playerNums[i].style.backgroundColor=="rgb(255, 151, 151)"){
+					playerNums[i].focus();
+					break;
+				}
+			}
+		}
+	}
+	</script>
+
+</body></html>
