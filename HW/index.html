@@ -62,7 +62,8 @@
         }
     </style>
 </head>
-<body>
+
+<body onload="generateNewAnswer()">
     <div class="main-box">
         <div>
             <h1>猜數字遊戲</h1>
@@ -72,20 +73,20 @@
             <legend>請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
-                <button class="selected" value="0">0</button>
-                <button value="1">1</button>
-                <button value="2">2</button>
-                <button class="selected" value="3">3</button>
-                <button value="4">4</button>
-                <button value="5">5</button>
-                <button class="selected" value="6">6</button>
-                <button class="selected" value="7">7</button>
-                <button value="8">8</button>
-                <button class="selected" value="9">9</button>
+                <button onclick="modifySelectedNumbers(this)" value="0">0</button>
+                <button onclick="modifySelectedNumbers(this)" value="1">1</button>
+                <button onclick="modifySelectedNumbers(this)" value="2">2</button>
+                <button onclick="modifySelectedNumbers(this)" value="3">3</button>
+                <button onclick="modifySelectedNumbers(this)" value="4">4</button>
+                <button onclick="modifySelectedNumbers(this)" value="5">5</button>
+                <button onclick="modifySelectedNumbers(this)" value="6">6</button>
+                <button onclick="modifySelectedNumbers(this)" value="7">7</button>
+                <button onclick="modifySelectedNumbers(this)" value="8">8</button>
+                <button onclick="modifySelectedNumbers(this)" value="9">9</button>
             </div>
 
             <div>
-                <input type="button" value="確定" />
+                <input type="button" onclick="showResult()" value="確定" />
             </div>
         </fieldset>
 
@@ -95,15 +96,49 @@
         </div>
 
         <div>
-            <input type="button" value="隱藏莊家數字" />
+            <input type="button" onclick="displayAnswer(this)" value="顯示莊家數字" />
             <input type="text" value="1, 3, 4, 5, 9" />
-            <input type="button" value="重啟遊戲" />
-            <input type="button" onclick="toggleBorder();" value="Border" />
+            <input type="button" onclick="restartGame()" value="重啟遊戲" />
+            <input type="button" style="float: right" onclick="toggleBorder(); " 
+                   value="Border" />
         </div>
 
     </div>
 
     <script>
+
+        // onload
+        function generateNewAnswer() {
+            // todo
+
+        }
+
+        // 點按鈕時
+        function modifySelectedNumbers(element) {
+            element.classList += "selected";
+            // todo
+            
+        }
+
+        // 點確定時
+        function showResult() {
+            //todo
+
+        }
+
+        // 點莊家數字時
+        function displayAnswer(element) {
+            //todo
+            
+        }
+
+        // 點重啟遊戲時
+        function restartGame() {
+            //todo
+            
+        }
+
+
         function toggleBorder() {
             let divs = document.querySelectorAll("div");
             for (let div of divs) {
