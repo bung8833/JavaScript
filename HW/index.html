@@ -70,7 +70,7 @@
         </div>
 
         <fieldset class="fieldset1">
-            <legend>ver1.5.3請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>ver1.5.4請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
                 <button id="num" onclick="toggleSelection(this)" value="0">0</button>
@@ -118,21 +118,23 @@
 
 
         function updateDisabled() {
+            let ok = document.getElementById("ok");
             let nums = document.querySelectorAll("#num");
             let selected = document.querySelectorAll(".selected");
-
-
-            selected.forEach(e => console.log(e.value));
+            //selected.forEach(e => console.log(e.value));
 
             // if exactly 5 numbers selected, 
-            // disable other numbers as well as the ok button
+            // disable [other numbers] as well as the ok button
             if (selectedNumbers.length == 5) {
-                document.getElementById("ok").disabled = false;
-                document.querySelectorAll("#num").forEach(b => b.disabled = true);
+                ok.disabled = false;
+                nums.forEach(b => b.disabled = true);
+                selected.forEach(b => b.disabled = false);
             }
+            // else
+            // disable the ok button, enable all buttons
             else {
-                document.getElementById("ok").disabled = true;
-                document.querySelectorAll("#num").forEach(b => b.disabled = false);
+                ok.disabled = true;
+                nums.forEach(b => b.disabled = false);
             }
         }
 
