@@ -70,35 +70,35 @@
         </div>
 
         <fieldset class="fieldset1">
-            <legend>ver1.0請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>ver1.5.3請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
-                <button onclick="toggleSelection(this)" value="0">0</button>
-                <button onclick="toggleSelection(this)" value="1">1</button>
-                <button onclick="toggleSelection(this)" value="2">2</button>
-                <button onclick="toggleSelection(this)" value="3">3</button>
-                <button onclick="toggleSelection(this)" value="4">4</button>
-                <button onclick="toggleSelection(this)" value="5">5</button>
-                <button onclick="toggleSelection(this)" value="6">6</button>
-                <button onclick="toggleSelection(this)" value="7">7</button>
-                <button onclick="toggleSelection(this)" value="8">8</button>
-                <button onclick="toggleSelection(this)" value="9">9</button>
+                <button id="num" onclick="toggleSelection(this)" value="0">0</button>
+                <button id="num" onclick="toggleSelection(this)" value="1">1</button>
+                <button id="num" onclick="toggleSelection(this)" value="2">2</button>
+                <button id="num" onclick="toggleSelection(this)" value="3">3</button>
+                <button id="num" onclick="toggleSelection(this)" value="4">4</button>
+                <button id="num" onclick="toggleSelection(this)" value="5">5</button>
+                <button id="num" onclick="toggleSelection(this)" value="6">6</button>
+                <button id="num" onclick="toggleSelection(this)" value="7">7</button>
+                <button id="num" onclick="toggleSelection(this)" value="8">8</button>
+                <button id="num" onclick="toggleSelection(this)" value="9">9</button>
             </div>
 
             <div>
-                <input type="button" onclick="showResult()" value="確定" />
+                <input id="ok" type="button" disabled onclick="showResult()" value="確定" />
             </div>
         </fieldset>
 
         <div class="result-box">
-            <label id="guess">result</label><br />
+            <label id="hint">result</label><br />
             <!--<label>您猜對的數字有：3, 9</label><br />-->
             <label>總計2個</label>
         </div>
 
         <div>
-            <input type="button" onclick="displayAnswer()" value="顯示莊家數字" />
-            <input type="text" value="1, 3, 4, 5, 9" />
+            <input type="button" id="uncover" onclick="showAnswer()" value="顯示莊家數字" />
+            <input type="text" id="answer" value="-1, -1, -1, -1, -1" />
             <input type="button" onclick="restartGame()" value="重啟遊戲" />
             <input type="button" style="float: right" onclick="toggleBorder(); " 
                    value="Border" />
@@ -117,6 +117,26 @@
         }
 
 
+        function updateDisabled() {
+            let nums = document.querySelectorAll("#num");
+            let selected = document.querySelectorAll(".selected");
+
+
+            selected.forEach(e => console.log(e.value));
+
+            // if exactly 5 numbers selected, 
+            // disable other numbers as well as the ok button
+            if (selectedNumbers.length == 5) {
+                document.getElementById("ok").disabled = false;
+                document.querySelectorAll("#num").forEach(b => b.disabled = true);
+            }
+            else {
+                document.getElementById("ok").disabled = true;
+                document.querySelectorAll("#num").forEach(b => b.disabled = false);
+            }
+        }
+
+
         function toggleSelection(element) {
             var number = element.value;
             var idx = selectedNumbers.indexOf(number);
@@ -125,14 +145,13 @@
             if (idx != -1) {
                 selectedNumbers.splice(idx, 1);
                 element.classList.remove("selected");
+            } // element was not selected
+            else if (selectedNumbers.length < 5) {
+                selectedNumbers.push(number);
+                element.classList.add("selected");
             }
-            else {
-                // element was not selected
-                if (selectedNumbers.length < 5) {
-                    selectedNumbers.push(number);
-                    element.classList.add("selected");
-                }
-            }
+
+            updateDisabled();
         }
 
         // 點確定時
@@ -141,19 +160,24 @@
             selectedNumbers.sort();
 
             let result = selectedNumbers.join(", ");
-            document.getElementById("guess").innerHTML = `result: ${result}`;
+            document.getElementById("hint").innerHTML = `guessed: ${result}`;
         }
 
         // 點莊家數字時
-        function displayAnswer() {
+        function showAnswer() {
             //todo
-            
+            let ans = answer.join(", ");
+
+
         }
 
         // 點重啟遊戲時
         function restartGame() {
             //todo
-            
+
+
+
+            updateDisabled();
         }
 
 
