@@ -70,7 +70,7 @@
         </div>
 
         <fieldset class="fieldset1">
-            <legend>ver1.5.4請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>ver1.5.5請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
                 <button id="num" onclick="toggleSelection(this)" value="0">0</button>
@@ -147,7 +147,8 @@
             if (idx != -1) {
                 selectedNumbers.splice(idx, 1);
                 element.classList.remove("selected");
-            } // element was not selected
+            }
+            // element was not selected
             else if (selectedNumbers.length < 5) {
                 selectedNumbers.push(number);
                 element.classList.add("selected");
