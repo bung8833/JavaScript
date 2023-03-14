@@ -52,7 +52,11 @@
             border-radius: 5px;
             border: 2px solid #eee;
             background-color: #eee;
-            cursor: pointer;
+            /*cursor: pointer;*/
+        }
+        #ok {
+            width: 50px;
+            height: 25px;
         }
         .selected {
             border: 2px solid #66c2a5;
@@ -69,14 +73,14 @@
     </style>
 </head>
 
-<body onload="generateNewAnswer(); updateCssStyle();">
+<body onload="generateNewAnswer(); updateDisabled();">
     <div class="main-box">
         <div>
             <h1>猜數字遊戲</h1>
         </div>
 
         <fieldset class="fieldset1">
-            <legend>ver2.3.0請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>ver2.3.2請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
                 <button id="num" onclick="toggleSelection(this)" value="0">0</button>
@@ -91,14 +95,15 @@
                 <button id="num" onclick="toggleSelection(this)" value="9">9</button>
             </div>
 
-            <div>
-                <input id="ok" type="button" disabled onclick="showResult()" value="確定" />
+            <div class="ok-pad">
+                <input id="ok" type="button" onclick="showResult()" value="確定" />
+                <!--<button id="ok" onclick="showResult()" value="確定"></button>-->
             </div>
         </fieldset>
 
         <div class="result-box">
-            <label id="hint">result</label><br />
-            <label id="count">總計2個</label>
+            <label id="hint">您猜對的數字有: </label><br />
+            <label id="count">總計：</label>
         </div>
 
         <div>
@@ -129,10 +134,21 @@
                     function () { $(this).addClass("enabled") },
                     function () { $(this).removeClass("enabled") }
                 );
-                //$("div.number-pad :disabled").hover(
-                //    function () { $(this).addClass("disabled") },
-                //    function () { $(this).removeClass("disabled") }
-                //);
+            })
+            // modify [ok button style]
+            $(function () {
+                $("div.ok-pad :enabled").css({
+                    backgroundColor: "#5e92ff",
+                    borderRadius: "5px",
+                    border: "2px solid #5e92ff",
+                    color: "white",
+                });
+                $("div.ok-pad :disabled").css({
+                    backgroundColor: "#eee",
+                    borderRadius: "5px",
+                    border: "2px solid #eee",
+                    color: "#aaa",
+                });
             })
         }
 
