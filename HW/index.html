@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>GuessTheNumber</title>
+    <script src="jquery-3.6.1.js"></script>
     <style>
         * {
             margin: 0px;
@@ -53,28 +54,29 @@
             background-color: #eee;
             cursor: pointer;
         }
-        button:hover {
-            border: 2px solid black;
-        }
         .selected {
             border: 2px solid #66c2a5;
             background-color: #66c2a5;
             color: white;
         }
-        .selected:hover {
+        .enabled {
             border: 2px solid black;
+            cursor: pointer;
+        }
+        .disabled {
+            border: 2px solid #eee;
         }
     </style>
 </head>
 
-<body onload="generateNewAnswer()">
+<body onload="generateNewAnswer(); updateCssStyle();">
     <div class="main-box">
         <div>
             <h1 hidden>猜數字遊戲 5 & only 5 ok</h1>
         </div>
 
         <fieldset class="fieldset1">
-            <legend>ver1.6.0請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>ver2.1.0請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
                 <button id="num" onclick="toggleSelection(this)" value="0">0</button>
@@ -102,7 +104,7 @@
 
         <div>
             <input type="button" id="uncover" onclick="showAnswer()" value="顯示莊家數字" />
-            <input type="text" id="answer" value="-1, -1, -1, -1, -1" />
+            <input type="text" id="txtAns" value="" />
             <input type="button" onclick="restartGame()" value="重啟遊戲" />
             <input type="button" style="float: right" onclick="toggleBorder(); " 
                    value="Border" />
@@ -118,6 +120,21 @@
         function generateNewAnswer() {
             // todo
             answer.push(1, 2, 3, 4, 5);
+        }
+
+        // onload
+        function updateCssStyle() {
+            // set [hover style] for all enabled buttons
+            $(function () {
+                $("div.number-pad :enabled").hover(
+                    function () { $(this).addClass("enabled") },
+                    function () { $(this).removeClass("enabled") }
+                );
+                //$("div.number-pad :disabled").hover(
+                //    function () { $(this).addClass("disabled") },
+                //    function () { $(this).removeClass("disabled") }
+                //);
+            })
         }
 
 
@@ -141,6 +158,8 @@
 
                 nums.forEach(b => b.disabled = false);
             }
+
+            updateCssStyle();
         }
 
 
@@ -173,17 +192,23 @@
 
         // 點莊家數字時
         function showAnswer() {
-            //todo
-            let ans = answer.join(", ");
+            let txtAns = document.getElementById("txtAns");
 
+            let uncover = document.getElementById("uncover");
 
+            if (uncover.value == "顯示莊家數字") {
+                uncover.value = "隱藏莊家數字";
+                txtAns.value = answer.join(", ");
+            }
+            else if (uncover.value == "隱藏莊家數字") {
+                uncover.value = "顯示莊家數字"
+                txtAns.value = "";
+            }
         }
 
         // 點重啟遊戲時
         function restartGame() {
             //todo
-
-
 
             updateDisabled();
         }
