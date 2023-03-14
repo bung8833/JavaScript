@@ -12,7 +12,7 @@
         .main-box {
             margin: 25px auto;
             padding: 1px;
-            width: 750px;
+            width: 700px;
             height: auto;
             /*box-shadow: 5px 5px 10px #999;*/
             text-align: center;
@@ -72,11 +72,11 @@
 <body onload="generateNewAnswer(); updateCssStyle();">
     <div class="main-box">
         <div>
-            <h1 hidden>猜數字遊戲 5 & only 5 ok</h1>
+            <h1>猜數字遊戲</h1>
         </div>
 
         <fieldset class="fieldset1">
-            <legend>ver2.1.0請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>ver2.3.0請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
                 <button id="num" onclick="toggleSelection(this)" value="0">0</button>
@@ -98,8 +98,7 @@
 
         <div class="result-box">
             <label id="hint">result</label><br />
-            <!--<label>您猜對的數字有：3, 9</label><br />-->
-            <label>總計2個</label>
+            <label id="count">總計2個</label>
         </div>
 
         <div>
@@ -164,7 +163,7 @@
 
 
         function toggleSelection(element) {
-            var number = element.value;
+            var number = parseInt(element.value);
             var idx = selectedNumbers.indexOf(number);
 
             // element was selected
@@ -181,16 +180,24 @@
             updateDisabled();
         }
 
-        // 點確定時
+        
         function showResult() {
-            //todo
-            selectedNumbers.sort();
+            let bingo = [];
 
-            let result = selectedNumbers.join(", ");
-            document.getElementById("hint").innerHTML = `guessed: ${result}`;
+            // 將猜對的數字加進 bingo array
+            function checkAnswer(n) {
+                if (answer.indexOf(n) != -1) {
+                    bingo.push(n);
+                }
+            }
+            selectedNumbers.forEach(n => checkAnswer(n));
+
+            let result = bingo.sort().join(", ");
+            document.getElementById("hint").innerHTML = `您猜對的數字有: ${result}`;
+            document.getElementById("count").innerHTML = `總計:${bingo.length}個`;
         }
 
-        // 點莊家數字時
+        
         function showAnswer() {
             let txtAns = document.getElementById("txtAns");
 
