@@ -63,12 +63,24 @@
             background-color: #66c2a5;
             color: white;
         }
-        .enabled {
+        .num-enabled {
             border: 2px solid black;
             cursor: pointer;
         }
-        .disabled {
+        .num-disabled {
             border: 2px solid #eee;
+        }
+        .ok-enabled {
+            background-color: #5e92ff;
+            border-radius: 5px;
+            border: 2px solid #5e92ff;
+            color: white;
+        }
+        .ok-disabled {
+            background-color: #eee;
+            border-radius: 5px;
+            border: 2px solid #eee;
+            color: #aaa;
         }
     </style>
 </head>
@@ -80,7 +92,7 @@
         </div>
 
         <fieldset class="fieldset1">
-            <legend>ver2.3.2請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>ver2.5.0請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
                 <button id="num" onclick="toggleSelection(this)" value="0">0</button>
@@ -129,27 +141,50 @@
         // onload
         function updateCssStyle() {
             // set [hover style] for all enabled buttons
-            $(function () {
-                $("div.number-pad :enabled").hover(
-                    function () { $(this).addClass("enabled") },
-                    function () { $(this).removeClass("enabled") }
-                );
-            })
+            let numberPad = document.querySelectorAll("#num:not([disabled])");
+
+            for (let num of numberPad) {
+                num.addEventListener("mouseover", function () {
+                    this.classList.add("num-enabled");
+                })
+
+                num.addEventListener("mouseout", function () {
+                    this.classList.remove("num-enabled");
+                })
+            }
+            //$(function () {
+            //    $("div.number-pad :enabled").hover(
+            //        function () { $(this).addClass("num-enabled") },
+            //        function () { $(this).removeClass("num-enabled") }
+            //    );
+            //})
+
+
             // modify [ok button style]
-            $(function () {
-                $("div.ok-pad :enabled").css({
-                    backgroundColor: "#5e92ff",
-                    borderRadius: "5px",
-                    border: "2px solid #5e92ff",
-                    color: "white",
-                });
-                $("div.ok-pad :disabled").css({
-                    backgroundColor: "#eee",
-                    borderRadius: "5px",
-                    border: "2px solid #eee",
-                    color: "#aaa",
-                });
-            })
+            let okPad = document.querySelector("#ok");
+
+            if (okPad.disabled == true) {
+                okPad.classList.remove(...okPad.classList);
+                okPad.classList.add("ok-disabled");
+            }
+            if (okPad.disabled == false) {
+                okPad.classList.remove(...okPad.classList);
+                okPad.classList.add("ok-enabled");
+            }
+            //$(function () {
+            //    $("div.ok-pad :enabled").css({
+            //        backgroundColor: "#5e92ff",
+            //        borderRadius: "5px",
+            //        border: "2px solid #5e92ff",
+            //        color: "white",
+            //    });
+            //    $("div.ok-pad :disabled").css({
+            //        backgroundColor: "#eee",
+            //        borderRadius: "5px",
+            //        border: "2px solid #eee",
+            //        color: "#aaa",
+            //    });
+            //})
         }
 
 
