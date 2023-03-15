@@ -12,7 +12,7 @@
         .main-box {
             margin: 25px auto;
             padding: 1px;
-            width: 700px;
+            width: 725px;
             height: auto;
             /*box-shadow: 5px 5px 10px #999;*/
             text-align: center;
@@ -46,17 +46,15 @@
         }
 
         button {
-            padding: 10px;
-            margin: 10px;
+            padding: 6px;
+            margin: 8px 8px;
+            width: 40px;
+            height: 55px;
             font-size: 20px;
             border-radius: 5px;
             border: 2px solid #eee;
             background-color: #eee;
             /*cursor: pointer;*/
-        }
-        #ok {
-            width: 50px;
-            height: 25px;
         }
         .selected {
             border: 2px solid #66c2a5;
@@ -70,17 +68,23 @@
         .num-disabled {
             border: 2px solid #eee;
         }
+
         .ok-enabled {
             background-color: #5e92ff;
             border-radius: 5px;
-            border: 2px solid #5e92ff;
+            border: 1.2px solid #304fee;
             color: white;
+            cursor: pointer;
         }
         .ok-disabled {
             background-color: #eee;
             border-radius: 5px;
-            border: 2px solid #eee;
+            border: 1.2px solid #eee;
             color: #aaa;
+        }
+        #ok {
+            width: 65px;
+            height: 28px;
         }
     </style>
 </head>
@@ -92,7 +96,7 @@
         </div>
 
         <fieldset class="fieldset1">
-            <legend>ver2.5.0請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>ver2.5.1請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
                 <button id="num" onclick="toggleSelection(this)" value="0">0</button>
@@ -152,12 +156,6 @@
                     this.classList.remove("num-enabled");
                 })
             }
-            //$(function () {
-            //    $("div.number-pad :enabled").hover(
-            //        function () { $(this).addClass("num-enabled") },
-            //        function () { $(this).removeClass("num-enabled") }
-            //    );
-            //})
 
 
             // modify [ok button style]
@@ -171,20 +169,6 @@
                 okPad.classList.remove(...okPad.classList);
                 okPad.classList.add("ok-enabled");
             }
-            //$(function () {
-            //    $("div.ok-pad :enabled").css({
-            //        backgroundColor: "#5e92ff",
-            //        borderRadius: "5px",
-            //        border: "2px solid #5e92ff",
-            //        color: "white",
-            //    });
-            //    $("div.ok-pad :disabled").css({
-            //        backgroundColor: "#eee",
-            //        borderRadius: "5px",
-            //        border: "2px solid #eee",
-            //        color: "#aaa",
-            //    });
-            //})
         }
 
 
