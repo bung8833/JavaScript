@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>GuessTheNumber</title>
+    <title>GuessTheNumbers</title>
     <style>
         * {
             margin: 0px;
@@ -123,14 +123,14 @@
     </style>
 </head>
 
-<body onload="generateNewAnswer(); updateDisabled();">
+<body onload="init();">
     <div class="main-box">
         <div>
-            <h1>猜數字遊戲 ver2.6.0</h1>
+            <h1>猜數字遊戲 ver3.4</h1>
         </div>
 
         <fieldset class="fieldset1">
-            <legend>請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>請猜測莊家的5個數字。您可以持續嘗試，直到猜中5個數字為止。</legend>
 
             <div class="number-pad">
                 <button id="num" onclick="toggleSelection(this)" value="0">0</button>
@@ -153,8 +153,8 @@
 
         <div class="answer-region">
             <div class="result-box">
-                <label id="hint">您猜對的數字有: </label><br />
-                <label id="count">總計：</label>
+                <label id="hint">This is hintText.</label><br />
+                <label id="count">This is countText.</label>
             </div>
 
             <div class="interact-box">
@@ -177,62 +177,54 @@
     <script>
         var answer = [];
         var selectedNumbers = [];
+        var hintText = "您猜對的數字有：";
+        var countText = "總計：";
+        
+        function renewAnswer() {
+            // generate 5 non-repeating numbers
+            answer = [];
+            range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-        // onload
-        function generateNewAnswer() {
-            // todo
-            answer.push(1, 2, 3, 4, 5);
-        }
-
-        // onload
-        function updateCssStyle() {
-            // set [hover style] for all enabled buttons
-            let numberPad = document.querySelectorAll("#num:not([disabled])");
-
-            for (let num of numberPad) {
-                num.addEventListener("mouseover", function () {
-                    this.classList.add("num-enabled");
-                })
-
-                num.addEventListener("mouseout", function () {
-                    this.classList.remove("num-enabled");
-                })
+            while (answer.length < 5) {
+                let index = Math.floor(Math.random() * 10) % range.length;
+                answer.push(range[index]);
+                range.splice(index, 1);
             }
+            answer.sort();
 
+            // reset hints
+            document.getElementById("hint").innerHTML = hintText;
+            document.getElementById("count").innerHTML = countText;
 
-            // modify [ok button style]
-            let okPad = document.querySelector("#ok");
-
-            if (okPad.disabled == true) {
-                okPad.classList.remove(...okPad.classList);
-                okPad.classList.add("btn-disabled");
-            }
-            if (okPad.disabled == false) {
-                okPad.classList.remove(...okPad.classList);
-                okPad.classList.add("btn-enabled");
+            // hide answer
+            let uncover = document.getElementById("uncover");
+            if (uncover.value == "隱藏莊家數字") {
+                uncover.click();
             }
         }
 
-
+        
         function updateDisabled() {
             let ok = document.getElementById("ok");
             let nums = document.querySelectorAll("#num");
             let selected = document.querySelectorAll(".selected");
 
-            // if exactly 5 numbers selected, 
-            // disable [other numbers] as well as the ok button
+            // if exactly 5 numbers selected:
+            // disable [unselected numbers]
+            // enable the ok button
             if (selectedNumbers.length == 5) {
-                ok.disabled = false;
-
                 nums.forEach(b => b.disabled = true);
                 selected.forEach(b => b.disabled = false);
-            }
-            // else
-            // disable the ok button, enable all buttons
-            else {
-                ok.disabled = true;
 
+                ok.disabled = false;
+            }
+            // else:
+            // enable all [number buttons]
+            // disable the ok button
+            else {
                 nums.forEach(b => b.disabled = false);
+
+                ok.disabled = true;
             }
 
             updateCssStyle();
@@ -261,17 +253,19 @@
         function showResult() {
             let bingo = [];
 
+            // todo 全部猜中之後
+
             // 將猜對的數字加進 bingo array
+            selectedNumbers.forEach(n => checkAnswer(n));
             function checkAnswer(n) {
                 if (answer.indexOf(n) != -1) {
                     bingo.push(n);
                 }
             }
-            selectedNumbers.forEach(n => checkAnswer(n));
-
+            
             let result = bingo.sort().join(", ");
-            document.getElementById("hint").innerHTML = `您猜對的數字有: ${result}`;
-            document.getElementById("count").innerHTML = `總計:${bingo.length}個`;
+            document.getElementById("hint").innerHTML = `${hintText}${result}`;
+            document.getElementById("count").innerHTML = `${countText}${bingo.length}個`;
         }
 
         
@@ -290,11 +284,49 @@
             }
         }
 
-        // 點重啟遊戲時
+        
         function restartGame() {
-            //todo
+            // "unselect" all [number buttons]
+            let selected = document.querySelectorAll(".selected");
+            selected.forEach(s => s.click()); // todo 改成 toggleSelection(selected) ??
 
+            renewAnswer();
             updateDisabled();
+        }
+        
+
+        function init() {
+            renewAnswer();
+            updateDisabled();
+        }
+
+
+        function updateCssStyle() {
+            // set [hover style] for all enabled buttons
+            let numberPad = document.querySelectorAll("#num:not([disabled])");
+
+            for (let num of numberPad) {
+                num.addEventListener("mouseover", function () {
+                    this.classList.add("num-enabled");
+                })
+
+                num.addEventListener("mouseout", function () {
+                    this.classList.remove("num-enabled");
+                })
+            }
+
+
+            // modify [ok button style]
+            let okPad = document.querySelector("#ok");
+
+            if (okPad.disabled == true) {
+                okPad.classList.remove(...okPad.classList);
+                okPad.classList.add("btn-disabled");
+            }
+            if (okPad.disabled == false) {
+                okPad.classList.remove(...okPad.classList);
+                okPad.classList.add("btn-enabled");
+            }
         }
 
 
