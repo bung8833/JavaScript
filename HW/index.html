@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <title>GuessTheNumber</title>
-    <script src="jquery-3.6.1.js"></script>
     <style>
         * {
             margin: 0px;
@@ -69,14 +68,14 @@
             border: 2px solid #eee;
         }
 
-        .ok-enabled {
+        .btn-enabled {
             background-color: #5e92ff;
             border-radius: 5px;
             border: 1.2px solid #304fee;
             color: white;
             cursor: pointer;
         }
-        .ok-disabled {
+        .btn-disabled {
             background-color: #eee;
             border-radius: 5px;
             border: 1.2px solid #eee;
@@ -85,6 +84,22 @@
         #ok {
             width: 65px;
             height: 28px;
+        }
+
+        #uncover {
+            width: 120px;
+            height: 30px;
+        }
+        #restart {
+            width: 90px;
+            height: 30px;
+            background-color: #c11b1b;
+            border: 1.2px solid #650a0a;
+        }
+
+        #txtAns {
+            width: 125px;
+            height: 25px;
         }
     </style>
 </head>
@@ -96,7 +111,7 @@
         </div>
 
         <fieldset class="fieldset1">
-            <legend>ver2.5.1請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
+            <legend>ver2.5.2請猜測莊家的5個數字。您可以多次嘗試，直到猜中為止。</legend>
 
             <div class="number-pad">
                 <button id="num" onclick="toggleSelection(this)" value="0">0</button>
@@ -123,9 +138,14 @@
         </div>
 
         <div>
-            <input type="button" id="uncover" onclick="showAnswer()" value="顯示莊家數字" />
+            <input type="button" id="uncover" onclick="showAnswer()" value="顯示莊家數字" 
+                   class="btn-enabled"/>
+
             <input type="text" id="txtAns" value="" />
-            <input type="button" onclick="restartGame()" value="重啟遊戲" />
+
+            <input type="button" id="restart" onclick="restartGame()" value="重啟遊戲" 
+                   class="btn-enabled"/>
+
             <input type="button" style="float: right" onclick="toggleBorder(); " 
                    value="Border" />
         </div>
@@ -163,11 +183,11 @@
 
             if (okPad.disabled == true) {
                 okPad.classList.remove(...okPad.classList);
-                okPad.classList.add("ok-disabled");
+                okPad.classList.add("btn-disabled");
             }
             if (okPad.disabled == false) {
                 okPad.classList.remove(...okPad.classList);
-                okPad.classList.add("ok-enabled");
+                okPad.classList.add("btn-enabled");
             }
         }
 
