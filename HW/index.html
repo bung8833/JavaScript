@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <title>GuessTheNumbers</title>
-    <link rel="icon" href="/favicon1.ico" />
     <style>
         * {
             margin: 0px;
@@ -47,7 +46,7 @@
             font-size: 0.8em;
         }
 
-        .interact-box {
+        .interact-pad {
             margin: 15px auto;
             padding: 0px;
             height: 40px;
@@ -57,7 +56,7 @@
             border: 1px solid black;
         }
 
-        .fieldset1 {
+        .guess-region {
             margin: 35px;
             padding: 5px;
             font-size: 0.9em;
@@ -116,16 +115,17 @@
         }
 
         #uncover {
-            width: 120px;
+            width: 110px;
             height: 30px;
             float: left;
         }
 
         #txtAns {
             margin: 0px 10px;
-            width: 125px;
-            height: 25px;
+            width: 165px;
+            height: 27px;
             float: left;
+            text-align: center;
         }
 
         #restart {
@@ -141,10 +141,10 @@
 <body onload="init();">
     <div class="main-box">
         <div>
-            <h1>猜數字遊戲 ver3.4</h1>
+            <h1>猜數字遊戲</h1>
         </div>
 
-        <fieldset class="fieldset1">
+        <fieldset class="guess-region">
             <legend>請猜測莊家的5個數字。您可以持續嘗試，直到猜中5個數字為止。</legend>
 
             <div class="number-pad">
@@ -162,30 +162,24 @@
 
             <div class="ok-pad">
                 <input id="ok" type="button" onclick="showResult()" value="確定" />
-                <!--<button id="ok" onclick="showResult()" value="確定"></button>-->
             </div>
         </fieldset>
 
         <div class="answer-region">
             <div class="result-box">
-                <label id="hint">This is hintText.</label><br />
-                <label id="count">This is countText.</label>
+                <label id="hint">您猜對的數字有：</label><br />
+                <label id="count">總計：</label>
             </div>
 
-            <div class="interact-box">
-                <input type="button" id="uncover" onclick="showAnswer()" value="顯示莊家數字"
-                       class="btn-enabled" />
+            <div class="interact-pad">
+                <input type="button" id="uncover" onclick="showAnswer()"
+                       value="顯示莊家數字" class="btn-enabled" />
 
                 <input type="text" id="txtAns" value="" />
 
-                <input type="button" id="restart" onclick="restartGame()" value="重啟遊戲"
-                       class="btn-enabled" />
+                <input type="button" id="restart" onclick="restartGame()"
+                       value="重啟遊戲" class="btn-enabled" />
             </div>
-        </div>
-
-        <div>
-            <input type="button" style="float: right" onclick="toggleBorder(); "
-                   value="Border" />
         </div>
     </div>
 
@@ -222,15 +216,13 @@
         function updateDisabled() {
             let ok = document.getElementById("ok");
             let nums = document.querySelectorAll("#num");
-            let selected = document.querySelectorAll(".selected");
+            let numsUnselected = document.querySelectorAll("#num:not(.selected)");
 
             // if exactly 5 numbers selected:
             // disable [unselected numbers]
             // enable the ok button
             if (selectedNumbers.length == 5) {
-                nums.forEach(b => b.disabled = true);
-                selected.forEach(b => b.disabled = false);
-
+                numsUnselected.forEach(b => b.disabled = true);
                 ok.disabled = false;
             }
             // else:
@@ -238,7 +230,6 @@
             // disable the ok button
             else {
                 nums.forEach(b => b.disabled = false);
-
                 ok.disabled = true;
             }
 
@@ -268,30 +259,47 @@
         function showResult() {
             let bingo = [];
 
-            // todo 全部猜中之後
-
-            // 將猜對的數字加進 bingo array
+            // add correct numbers into bingo
             selectedNumbers.forEach(n => checkAnswer(n));
             function checkAnswer(n) {
                 if (answer.indexOf(n) != -1) {
                     bingo.push(n);
                 }
             }
-            
-            let result = bingo.sort().join(", ");
-            document.getElementById("hint").innerHTML = `${hintText}${result}`;
-            document.getElementById("count").innerHTML = `${countText}${bingo.length}個`;
+
+            // 沒有全部猜中
+            if (bingo.length != 5) {
+                let result = bingo.sort().join(", ");
+                let count = bingo.length;
+                document.getElementById("hint").innerHTML = `${hintText}${result}`;
+                document.getElementById("count").innerHTML = `${countText}${count}個`;
+            }
+            // 全部猜中
+            else {
+                let congrats1 = `BINGO!!`;
+                let congrats2 = `正確答案！`;
+                document.getElementById("hint").innerHTML = congrats1;
+                document.getElementById("count").innerHTML = congrats2;
+
+                let uncover = document.getElementById("uncover");
+                if (uncover.value == "顯示莊家數字") {
+                    uncover.click();
+                }
+                
+                let restart = document.getElementById("restart");
+                restart.style.width = "145px";
+                updateCssStyle();
+            }
         }
 
         
         function showAnswer() {
             let txtAns = document.getElementById("txtAns");
-
             let uncover = document.getElementById("uncover");
 
             if (uncover.value == "顯示莊家數字") {
                 uncover.value = "隱藏莊家數字";
-                txtAns.value = answer.join(", ");
+                txtAns.value = "莊家的數字：" + answer.join(", ");
             }
             else if (uncover.value == "隱藏莊家數字") {
                 uncover.value = "顯示莊家數字"
@@ -303,7 +311,10 @@
         function restartGame() {
             // "unselect" all [number buttons]
             let selected = document.querySelectorAll(".selected");
-            selected.forEach(s => s.click()); // todo 改成 toggleSelection(selected) ??
+            selected.forEach(s => s.click());
+
+            let restart = document.getElementById("restart");
+            restart.style.width = "90px";
 
             renewAnswer();
             updateDisabled();
@@ -341,19 +352,6 @@
             if (okPad.disabled == false) {
                 okPad.classList.remove(...okPad.classList);
                 okPad.classList.add("btn-enabled");
-            }
-        }
-
-
-        function toggleBorder() {
-            let divs = document.querySelectorAll("div");
-            for (let div of divs) {
-                if (div.classList.contains("border-style")) {
-                    div.classList.remove("border-style");
-                }
-                else {
-                    div.classList.add("border-style");
-                }
             }
         }
     </script>
