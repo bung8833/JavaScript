@@ -90,6 +90,11 @@
             cursor: pointer;
         }
 
+        .num-selected {
+            border: 2px solid #d30909;
+            cursor: pointer;
+        }
+
         .num-disabled {
             border: 2px solid #eee;
         }
@@ -299,7 +304,7 @@
 
             if (uncover.value == "顯示莊家數字") {
                 uncover.value = "隱藏莊家數字";
-                txtAns.value = "莊家的數字：" + answer.join(", ");
+                txtAns.value = /*"莊家的數字：" + */answer.join(", ");
             }
             else if (uncover.value == "隱藏莊家數字") {
                 uncover.value = "顯示莊家數字"
@@ -328,10 +333,25 @@
 
 
         function updateCssStyle() {
+            console.clear();
             // set [hover style] for all enabled buttons
             let numberPad = document.querySelectorAll("#num:not([disabled])");
+            let selected = document.querySelectorAll("#num.selected");
+            let unSelected = document.querySelectorAll("#num:not([disabled]):not(.selected)");
 
-            for (let num of numberPad) {
+            //// selected numbers
+            for (let num of selected) {
+                num.addEventListener("mouseover", function () {
+                    this.classList.add("num-selected");
+                })
+
+                num.addEventListener("mouseout", function () {
+                    this.classList.remove("num-selected");
+                })
+                console.log(num.classList);
+            }
+            // unselected numbers
+            for (let num of unSelected) {
                 num.addEventListener("mouseover", function () {
                     this.classList.add("num-enabled");
                 })
@@ -339,6 +359,7 @@
                 num.addEventListener("mouseout", function () {
                     this.classList.remove("num-enabled");
                 })
+                console.log(num.classList);
             }
 
 
