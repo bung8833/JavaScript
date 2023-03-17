@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>GuessTheNumbers</title>
+    <link rel="icon" href="numbers-blocks.png" />
     <style>
         * {
             margin: 0px;
@@ -333,7 +334,6 @@
 
 
         function updateCssStyle() {
-            console.clear();
             // set [hover style] for all enabled buttons
             let numberPad = document.querySelectorAll("#num:not([disabled])");
             let selected = document.querySelectorAll("#num.selected");
@@ -348,7 +348,6 @@
                 num.addEventListener("mouseout", function () {
                     this.classList.remove("num-selected");
                 })
-                console.log(num.classList);
             }
             // unselected numbers
             for (let num of unSelected) {
@@ -359,7 +358,6 @@
                 num.addEventListener("mouseout", function () {
                     this.classList.remove("num-enabled");
                 })
-                console.log(num.classList);
             }
 
 
